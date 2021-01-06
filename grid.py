@@ -54,7 +54,7 @@ class Grid:
     def coordinate_to_cell(self, row, column):
         cell_size = int(np.sqrt(self._width))
         row_offset, column_offset = int(
-            row//cell_size), int(column % cell_size)
+            row//cell_size), int(column // cell_size)
         return row_offset * cell_size + column_offset
 
     def is_possible(self, row, column, number):

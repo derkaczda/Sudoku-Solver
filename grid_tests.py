@@ -81,6 +81,26 @@ class TestGridLoading(unittest.TestCase):
         result = self.grid.is_possible_in_cell(6, 9)
         self.assertFalse(result)
 
+    def test_is_four_possible_at_two_four(self):
+        result = self.grid.is_possible(1, 3, 4)
+        self.assertFalse(result)
+
+    def test_is_three_possible_at_two_four(self):
+        result = self.grid.is_possible(1, 3, 3)
+        self.assertTrue(result)
+
+    def test_two_four_is_grid_cell_two(self):
+        result = self.grid.coordinate_to_cell(1, 3)
+        self.assertEqual(1, result)
+
+    def test_eight_eight_is_grid_cell_nine(self):
+        result = self.grid.coordinate_to_cell(8, 8)
+        self.assertEqual(8, result)
+
+    def test_five_nine_is_grid_cell_six(self):
+        result = self.grid.coordinate_to_cell(4, 8)
+        self.assertEqual(5, result)
+
 
 if __name__ == "__main__":
     unittest.main()
