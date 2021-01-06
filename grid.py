@@ -25,8 +25,12 @@ class Grid:
         return self._width
 
     def set(self, row, column, value):
-        print(f"setting value {value}")
         self.grid[row, column] = value
+
+    def pop(self, row, column):
+        result = self.grid[row, column]
+        self.grid[row, column] = 0
+        return result
 
     def row(self, id):
         return self.grid[id]
@@ -84,5 +88,5 @@ class Grid:
         else:
             return reduce(np.intersect1d, (self.possible_values_for_row(row), self.possible_values_for_column(column), self.possible_values_for_cell(self.coordinate_to_cell(row, column))))
 
-    def print(self):
+    def show(self):
         print(self.grid)

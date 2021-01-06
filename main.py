@@ -13,7 +13,9 @@ if __name__ == '__main__':
     if arguments.file != "":
         grid = Grid.from_file(arguments.file)
         solver = BackwardSolver(grid)
-        for i in range(arguments.steps):
+#        solver.solve()
+#        print(grid.grid)
+        while not solver.solved:
             solver.step()
-            print(f"Step { i + 1 }:")
-            grid.print()
+            grid.show()
+            a = input()
