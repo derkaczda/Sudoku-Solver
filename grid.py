@@ -62,3 +62,9 @@ class Grid:
 
     def possible_values_for_row(self, row_id):
         return [number for number in range(1, self._width + 1) if self.is_possible_in_row(row_id, number)]
+
+    def possible_values_for_column(self, column_id):
+        return [number for number in range(1, self._width + 1) if self.is_possible_in_column(column_id, number)]
+
+    def possible_values_for_cell(self, cell_id):
+        return [number for number in range(1, self._width + 1) if self.is_possible_in_cell(cell_id, number)]

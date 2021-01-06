@@ -140,6 +140,31 @@ class TestGrid(unittest.TestCase):
         target = np.array([1, 3, 5, 6, 7, 8, 9])
         self.assertTrue(np.array_equal(target, result))
 
+    def test_grid_two_possible_values_for_column_one(self):
+        result = self.grid_two.possible_values_for_column(0)
+        target = np.array([3, 6, 7])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_grid_two_possible_values_for_column_five(self):
+        result = self.grid_two.possible_values_for_column(4)
+        target = np.array([2, 3, 4, 5, 6])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_grid_two_possible_values_for_column_nine(self):
+        result = self.grid_two.possible_values_for_column(8)
+        target = np.array([3, 6, 8])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_grid_two_possible_values_for_cell_one(self):
+        result = self.grid_two.possible_values_for_cell(0)
+        target = np.array([1, 3, 6])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_grid_two_possible_values_for_cell_nine(self):
+        result = self.grid_two.possible_values_for_cell(8)
+        target = np.array([2, 7, 8])
+        self.assertTrue(np.array_equal(target, result))
+
 
 if __name__ == "__main__":
     unittest.main()
