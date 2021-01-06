@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from functools import reduce
 
 
 class Grid:
@@ -61,10 +62,13 @@ class Grid:
         return self.is_possible_in_row(row, number) and self.is_possible_in_column(column, number) and self.is_possible_in_cell(self.coordinate_to_cell(row, column), number)
 
     def possible_values_for_row(self, row_id):
-        return [number for number in range(1, self._width + 1) if self.is_possible_in_row(row_id, number)]
+        return np.array([number for number in range(1, self._width + 1) if self.is_possible_in_row(row_id, number)])
 
     def possible_values_for_column(self, column_id):
-        return [number for number in range(1, self._width + 1) if self.is_possible_in_column(column_id, number)]
+        return np.array([number for number in range(1, self._width + 1) if self.is_possible_in_column(column_id, number)])
 
     def possible_values_for_cell(self, cell_id):
-        return [number for number in range(1, self._width + 1) if self.is_possible_in_cell(cell_id, number)]
+        return np.array([number for number in range(1, self._width + 1) if self.is_possible_in_cell(cell_id, number)])
+
+    def possible_values(self, row, column):
+        return reduce(np.intersect1d, (self.possible_values_for_row(row), self.possible_values_for_column(column), self.possible_values_for_cell(self.coordinate_to_cell(row, column))))
