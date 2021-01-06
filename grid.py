@@ -59,3 +59,6 @@ class Grid:
 
     def is_possible(self, row, column, number):
         return self.is_possible_in_row(row, number) and self.is_possible_in_column(column, number) and self.is_possible_in_cell(self.coordinate_to_cell(row, column), number)
+
+    def possible_values_for_row(self, row_id):
+        return [number for number in range(1, self._width + 1) if self.is_possible_in_row(row_id, number)]

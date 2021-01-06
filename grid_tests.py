@@ -3,7 +3,7 @@ import numpy as np
 from grid import Grid
 
 
-class TestGridLoading(unittest.TestCase):
+class TestGrid(unittest.TestCase):
     test_grid = np.array([
         [1, 3, 3, 4, 5, 6, 7, 8, 9],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -100,6 +100,45 @@ class TestGridLoading(unittest.TestCase):
     def test_five_nine_is_grid_cell_six(self):
         result = self.grid.coordinate_to_cell(4, 8)
         self.assertEqual(5, result)
+
+    def test_possible_values_for_row_one(self):
+        result = self.grid.possible_values_for_row(0)
+        target = np.array([])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_possible_values_for_row_two(self):
+        result = self.grid.possible_values_for_row(1)
+        target = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+        self.assertTrue(np.array_equal(target, result))
+
+    test_grid_two = np.array([
+        [2, 0, 4, 0, 7, 0, 0, 3, 5],
+        [8, 9, 0, 0, 1, 4, 0, 7, 0],
+        [0, 5, 7, 8, 0, 0, 0, 0, 4],
+        [1, 8, 0, 3, 0, 0, 5, 0, 2],
+        [0, 2, 0, 0, 0, 0, 0, 4, 0],
+        [4, 0, 5, 0, 0, 9, 0, 8, 7],
+        [9, 0, 0, 0, 0, 5, 3, 6, 0],
+        [0, 6, 0, 4, 8, 0, 0, 5, 9],
+        [5, 7, 0, 0, 9, 0, 4, 0, 1]
+    ])
+
+    grid_two = Grid(test_grid_two)
+
+    def test_grid_two_possible_values_for_row_eight(self):
+        result = self.grid_two.possible_values_for_row(7)
+        target = np.array([1, 2, 3, 7])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_grid_two_possible_values_for_row_one(self):
+        result = self.grid_two.possible_values_for_row(0)
+        target = np.array([1, 6, 8, 9])
+        self.assertTrue(np.array_equal(target, result))
+
+    def test_grid_two_possible_values_for_row_five(self):
+        result = self.grid_two.possible_values_for_row(4)
+        target = np.array([1, 3, 5, 6, 7, 8, 9])
+        self.assertTrue(np.array_equal(target, result))
 
 
 if __name__ == "__main__":
