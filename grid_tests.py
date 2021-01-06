@@ -180,6 +180,19 @@ class TestGrid(unittest.TestCase):
         target = np.array([5, 6])
         self.assertTrue(np.array_equal(target, result))
 
+    def test_grid_two_one_one_is_fixed_vale(self):
+        result = self.grid_two.is_fixed_value(0, 0)
+        self.assertTrue(result)
+
+    def test_grid_two_one_two_is_fixed_value(self):
+        result = self.grid_two.is_fixed_value(0, 1)
+        self.assertFalse(result)
+
+    def test_grid_two_get_possible_values_one_one(self):
+        result = self.grid_two.possible_values(0, 0)
+        target = np.array([])
+        self.assertTrue(np.array_equal(target, result))
+
 
 if __name__ == "__main__":
     unittest.main()

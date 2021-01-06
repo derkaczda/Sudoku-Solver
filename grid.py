@@ -7,6 +7,7 @@ class Grid:
     def __init__(self, array):
         self.grid = array
         self._width = len(self.grid[0])
+        self.current_grid = self.grid
 
     @staticmethod
     def from_file(file_path):
@@ -43,6 +44,9 @@ class Grid:
         # small gauss
         return (self._width ** 2 + self._width) / 2
 
+    def is_fixed_value(self, row, column):
+        return self.grid[row, column] != 0
+
     def is_possible_in_row(self, row_id, number):
         return 0 in self.row(row_id) and not(number in self.row(row_id))
 
@@ -71,4 +75,7 @@ class Grid:
         return np.array([number for number in range(1, self._width + 1) if self.is_possible_in_cell(cell_id, number)])
 
     def possible_values(self, row, column):
-        return reduce(np.intersect1d, (self.possible_values_for_row(row), self.possible_values_for_column(column), self.possible_values_for_cell(self.coordinate_to_cell(row, column))))
+        if self.is_fixed_value(row, column):
+            return np.array([])
+        else:
+            return reduce(np.intersect1d, (self.possible_values_for_row(row), self.possible_values_for_column(column), self.possible_values_for_cell(self.coordinate_to_cell(row, column))))
