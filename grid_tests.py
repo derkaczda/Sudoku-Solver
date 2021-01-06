@@ -193,6 +193,21 @@ class TestGrid(unittest.TestCase):
         target = np.array([])
         self.assertTrue(np.array_equal(target, result))
 
+    def test_grid_two_set_value_at_one_two(self):
+        self.grid_two.set(0, 1, 1)
+        target = np.array([
+            [2, 1, 4, 0, 7, 0, 0, 3, 5],
+            [8, 9, 0, 0, 1, 4, 0, 7, 0],
+            [0, 5, 7, 8, 0, 0, 0, 0, 4],
+            [1, 8, 0, 3, 0, 0, 5, 0, 2],
+            [0, 2, 0, 0, 0, 0, 0, 4, 0],
+            [4, 0, 5, 0, 0, 9, 0, 8, 7],
+            [9, 0, 0, 0, 0, 5, 3, 6, 0],
+            [0, 6, 0, 4, 8, 0, 0, 5, 9],
+            [5, 7, 0, 0, 9, 0, 4, 0, 1]
+        ])
+        self.assertTrue(np.array_equal(target, self.grid_two.grid))
+
 
 if __name__ == "__main__":
     unittest.main()
