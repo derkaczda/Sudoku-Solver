@@ -19,3 +19,4 @@ if __name__ == '__main__':
             solver.step()
             grid.show()
             a = input()
+        print("solved")
