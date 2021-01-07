@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Blacklist:
     def __init__(self, width):
         self.blacklist = {}
@@ -10,6 +11,10 @@ class Blacklist:
         if key not in self.blacklist:
             self.blacklist[key] = []
         self.blacklist[key].append(value)
+#        self.blacklist[key] = value
+
+    def clear(self):
+        self.blacklist = {}
 
     def get_entry(self, row, column):
         key = self.get_key(row, column)
@@ -24,7 +29,6 @@ class Blacklist:
         blacked = self.blacklist[key]
         intersection = np.intersect1d(np.array(blacked), np.array(other_list))
         return [number for number in other_list if number not in intersection]
-        
 
     def get_key(self, row, column):
-        return row*self.width + column 
+        return row*self.width + column
