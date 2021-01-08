@@ -90,3 +90,6 @@ class Grid:
 
     def show(self):
         print(self.grid)
+
+    def solved(self):
+        return 0 not in self.grid.flatten()

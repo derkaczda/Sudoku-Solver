@@ -13,8 +13,11 @@ class Blacklist:
         self.blacklist[key].append(value)
 #        self.blacklist[key] = value
 
-    def clear(self):
-        self.blacklist = {}
+    def clear_all(self):
+        self.balcklist = {}
+
+    def clear(self, row, column):
+        self.blacklist[self.get_key(row, column)] = []
 
     def get_entry(self, row, column):
         key = self.get_key(row, column)

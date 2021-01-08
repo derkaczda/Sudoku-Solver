@@ -15,8 +15,11 @@ if __name__ == '__main__':
         solver = BackwardSolver(grid)
 #        solver.solve()
 #        print(grid.grid)
-        while not solver.solved:
-            solver.step()
-            grid.show()
-            a = input()
-        print("solved")
+        solver.debug = False
+        solver.solve()
+        grid.show()
+#        while not solver.solved:
+#            solver.step()
+#            grid.show()
+#            a = input()
+#        print("solved")

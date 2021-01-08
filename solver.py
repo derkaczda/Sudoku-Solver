@@ -15,78 +15,55 @@ class BackwardSolver():
         self.step_backward = False
         self.row_to_solve = -1
         self.column_to_solve = -1
+        self.max_row = -1
+        self.max_column = -1
+        self.max_index = -1
         self.set_next_possible_position()
+        self.debug = False
 
     def step(self):
         sampled_value = self.sample_value()
         # best step just use sampled value
         if sampled_value is not None:
-            print(
-                f"setting {sampled_value} at position {self.current_row}, {self.current_column}")
+            if self.debug:
+                print(
+                    f"setting {sampled_value} at position {self.current_row}, {self.current_column}")
             self.board.set(self.current_row,
                            self.current_column, sampled_value)
-            self.last_correct_row, self.last_correct_column = self.get_position()
+            if self.board.solved():
+                self.solved = True
+                return
             self.set_next_possible_position(backward=False)
-            if self.row_to_solve != -1:
-                index_to_solve = self.row_to_solve * self.board.width + self.column_to_solve
-                current_index = self.current_row * self.board.width + self.current_column
-                if current_index > index_to_solve:
-                    self.row_to_solve = self.column_to_solve = -1
-                    self.blacklist.clear()
+            if self.is_new_max_position():
+                self.set_new_max_position()
+                self.blacklist.clear_all()
         else:
-            print(
-                f"no possible value at {self.current_row}, {self.current_column}. Going back to {self.last_correct_row}, {self.last_correct_column}")
-            if self.row_to_solve == -1:
-                self.row_to_solve = self.current_row
-                self.column_to_solve = self.current_column
-            self.set_to_last_correct_position()
-            false_value = self.board.pop(self.current_row, self.current_column)
+            self.set_next_possible_position(backward=True)
+            wrong_value = self.board.pop(self.current_row, self.current_column)
             self.blacklist.add(
-                self.current_row, self.current_column, false_value)
-            # any option left after blacklisting?
-            possible_values = self.blacklist.reduce(self.current_row, self.current_column,
-                                                    self.board.possible_values(
-                                                        self.current_row, self.current_column))
+                self.current_row, self.current_column, wrong_value)
+            possible_values = self.board.possible_values(
+                self.current_row, self.current_column)
             possible_values = self.blacklist.reduce(
                 self.current_row, self.current_column, possible_values)
-            while (possible_values == []):
+            while possible_values == []:
+                if self.debug:
+                    print(
+                        f"after blacklist no possible values at {self.current_row}, {self.current_column}")
+                self.blacklist.clear(self.current_row, self.current_column)
                 self.set_next_possible_position(backward=True)
-                print(
-                    f"after blacklist no possible value. go back to {self.current_row}, {self.current_column}")
-                false_value = self.board.pop(
+                wrong_value = self.board.pop(
                     self.current_row, self.current_column)
                 self.blacklist.add(
-                    self.current_row, self.current_column, false_value)
-                possible_values = self.blacklist.reduce(self.current_row, self.current_column,
-                                                        self.board.possible_values(
-                                                            self.current_row, self.current_column))
-                self.last_correct_row, self.last_correct_column = self.get_position()
+                    self.current_row, self.current_column, wrong_value)
+                possible_values = self.board.possible_values(
+                    self.current_row, self.current_column)
+                possible_values = self.blacklist.reduce(
+                    self.current_row, self.current_column, possible_values)
 
     def solve(self):
-        while not self.solved and not self.stop:
+        while not self.solved:
             self.step()
-
-    def forward(self):
-        is_fixed_value = self.board(self.current_row, self.current_column)
-        if is_fixed_value:
-            print(
-                f"fixed value at {self.current_row}, {self.current_column}. skipping.")
-            self.increment_position()
-            self.check_for_solved()
-            return
-        sampled_value = self.sample_value()
-        if sampled_value is None:
-            print(
-                f"this is not correct at position {self.current_row}, {self.current_column}")
-            self.step_backward = True
-            self.set_to_last_correct_position()
-
-    def get_position(self):
-        return self.current_row, self.current_column
-
-    def set_to_last_correct_position(self):
-        self.current_row = self.last_correct_row
-        self.current_column = self.last_correct_column
 
     def set_next_possible_position(self, backward=False):
         if backward:
@@ -100,12 +77,22 @@ class BackwardSolver():
         else:
             return
 
+    def is_new_max_position(self):
+        index = self.current_row * self.board.width + self.current_column
+        return index > self.max_index
+
+    def set_new_max_position(self):
+        self.max_index = self.current_row * self.board.width + self.current_column
+        self.max_row = self.current_row
+        self.max_column = self.current_column
+
     def sample_value(self):
         possible_values = self.board.possible_values(
             self.current_row, self.current_column)
         reduced_list = self.blacklist.reduce(
             self.current_row, self.current_column, possible_values)
-        print(f"possible values {reduced_list}")
+        if self.debug:
+            print(f"possible values {reduced_list}")
         if reduced_list == []:
             return None
         return np.random.choice(reduced_list)
@@ -116,7 +103,10 @@ class BackwardSolver():
         return [number for number in possible_values if number not in intersection]
 
     def increment_position(self):
-        if self.current_column + 1 >= self.board.width:
+        if self.current_column + 1 >= self.board.width and self.current_row + 1 >= self.board.width:
+            self.current_column = self.board.width - 1
+            self.current_row = self.board.width - 1
+        elif self.current_column + 1 >= self.board.width:
             self.current_column = 0
             self.current_row += 1
         else:
