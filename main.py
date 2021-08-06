@@ -40,6 +40,8 @@ if __name__ == '__main__':
 
     font_size = 50
     font = pygame.font.SysFont('comicsans', font_size)
+    font_size_small = 20
+    font_small = pygame.font.SysFont('comicsans', font_size_small)
 
     def main():
         looping = True
@@ -67,10 +69,16 @@ if __name__ == '__main__':
 
                 for n in range(1, 10):
                     label = font.render(str(n), True, black)
+                    possible_values_label = font_small.render("1,2,3,4", True, black)
                     width, height = label.get_size()
                     offset_x = width_delta/2 - width/2 
-                    offset_y = height_delta/2 - height/2
+                    offset_y = height_delta/2 - height/2 + 10
                     window.blit(label, ((n-1)*width_delta + offset_x, i*height_delta + offset_y))
+
+                    width, height = possible_values_label.get_size()
+                    offset_x = width_delta - width - 2
+                    offset_y = 5 
+                    window.blit(possible_values_label, ((n-1)*width_delta + offset_x, i * height_delta + offset_y))
 
 
             pygame.display.update()
