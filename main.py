@@ -1,6 +1,6 @@
 import argparse
-from grid import Grid
-from solver import BackwardSolver
+from solver.solver import BackwardSolver
+from solver.grid import Grid
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

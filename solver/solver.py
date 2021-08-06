@@ -1,4 +1,4 @@
-from blacklist import Blacklist
+from .blacklist import Blacklist
 import numpy as np
 
 
