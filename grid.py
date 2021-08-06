@@ -73,6 +73,7 @@ class Grid:
     def is_possible(self, row, column, number):
         return self.is_possible_in_row(row, number) and self.is_possible_in_column(column, number) and self.is_possible_in_cell(self.coordinate_to_cell(row, column), number)
 
+
     def possible_values_for_row(self, row_id):
         return np.array([number for number in range(1, self._width + 1) if self.is_possible_in_row(row_id, number)])
 
@@ -86,7 +87,12 @@ class Grid:
         if self.is_fixed_value(row, column):
             return np.array([])
         else:
-            return reduce(np.intersect1d, (self.possible_values_for_row(row), self.possible_values_for_column(column), self.possible_values_for_cell(self.coordinate_to_cell(row, column))))
+            row_values = self.row(row)
+            column_values = self.column(column)
+            cell_values = self.cell(self.coordinate_to_cell(row,column))
+            values = reduce(np.union1d, (row_values, column_values, cell_values))
+            return np.setdiff1d(np.arange(1, self._width+1), values)
+        #    return reduce(np.intersect1d, (self.possible_values_for_row(row), self.possible_values_for_column(column), self.possible_values_for_cell(self.coordinate_to_cell(row, column))))
 
     def show(self):
         print(self.grid)
