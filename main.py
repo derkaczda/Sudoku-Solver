@@ -38,6 +38,9 @@ if __name__ == '__main__':
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption('Sudoku solver')
 
+    font_size = 50
+    font = pygame.font.SysFont('comicsans', font_size)
+
     def main():
         looping = True
         while looping:
@@ -52,11 +55,23 @@ if __name__ == '__main__':
             
             line_thickness = 1
 
-            for i in range(1, grid_size + 1):
+
+            for i in range(0, grid_size):
                 new_y = int(i * height_delta)
                 new_x = int(i * width_delta)
                 pygame.draw.line(window, black, (0, new_y), (WINDOW_WIDTH, new_y), line_thickness)
                 pygame.draw.line(window, black, (new_x, 0), (new_x, WINDOW_HEIGHT), line_thickness)
+
+
+                # render 1 to 9 in a row
+
+                for n in range(1, 10):
+                    label = font.render(str(n), True, black)
+                    width, height = label.get_size()
+                    offset_x = width_delta/2 - width/2 
+                    offset_y = height_delta/2 - height/2
+                    window.blit(label, ((n-1)*width_delta + offset_x, i*height_delta + offset_y))
+
 
             pygame.display.update()
             fpsClock.tick(FPS)
